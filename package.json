@@ -4,12 +4,19 @@
   "description": "Teste avaliativo para a Signo Tech",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "script-start": "node index.js",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "testesigno"
   },
   "author": "Fellipe Luiz Serpe Barros",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.3"
+  }
 }
