@@ -26,8 +26,12 @@
 
             document.getElementById('id').value = enquetes.ID;
             document.getElementById('titulo').value = enquetes.NOME;
+            document.getElementById('desc').value = enquetes.DESCR;
             document.getElementById('dataInicio').value = enquetes.DATAINICIO;
             document.getElementById('dataTermino').value = enquetes.DATATERMINO;
+            document.getElementById('opt1').value = enquetes.opt1;
+            document.getElementById('opt2').value = enquetes.opt2;
+            document.getElementById('opt3').value = enquetes.opt3;
         }
 
         const salvar = async () => {
@@ -35,33 +39,43 @@
             const nome = document.getElementById('titulo').value;
             const DATAINICIO = document.getElementById('dataInicio').value;
             const DATATERMINO = document.getElementById('dataTermino').value;
+            const DESC = document.getElementById('desc').value;
+            const opt1 = document.getElementById('opt1').value;
+            const opt2 = document.getElementById('opt2').value;
+            const opt3 = document.getElementById('opt3').value;
 
-            if (!nome || !DATAINICIO || !DATATERMINO) {
+            if (!nome || !DATAINICIO || !DATATERMINO || !opt1 || !opt2) {
                 document.getElementById('campoObrigatorio').style.display = 'block';
                 return;
             }
 
-            const formData = new FormData();
-            formData.append('ID', id);
-            formData.append('NOME', nome);
-            formData.append('DATAINICIO', DATAINICIO);
-            formData.append('DATATERMINO', DATATERMINO);
+            const DATAINICIO_CLEAN = DATAINICIO.split('T')[0];
+            const DATATERMINO_CLEAN = DATATERMINO.split('T')[0]; 
+            console.log(DATAINICIO_CLEAN, DATATERMINO_CLEAN);
 
-            for (let pair of formData.entries()) {
-                console.log(pair[0]+ ': ' + pair[1]);
-            }
+            const data = {
+                NOME: nome,
+                DATAINICIO: DATAINICIO_CLEAN,
+                DATATERMINO: DATATERMINO_CLEAN,
+                DESCR: DESC,
+                opt1: opt1,
+                opt2: opt2,
+                opt3: opt3
+            };
 
             try {
                 let res;
                 if (id) {
                     res = await fetch(`http://localhost:3000/enquetes/${id}`, {
                         method: "PUT",
-                        body: formData,
+                        headers: { "Content-Type": "application/json"},
+                        body: JSON.stringify(data),
                     });
                 } else {
                     res = await fetch(`http://localhost:3000/enquetes`, {
                         method: "POST",
-                        body: formData,
+                        headers: { "Content-Type": "application/json"},
+                        body: JSON.stringify(data),
                     });
                 }
 
@@ -88,19 +102,35 @@
     <div class="container" style="height: 300px;">
         <h2> Adicionar enquete</h2>
         <br>
-        <form action="/cadastrarEnquete" method="post" enctype="multipart/form-data">
+        <form action="/cadastrar" method="post" enctype="multipart/form-data">
             <input type="hidden" id="id" />
             <div class="mb-3">
-                <label for="nome" class="form-label">Título</label>
-                <input type="text" class="form-control" id="nome">
+                <label for="titulo" class="form-label">Título *</label>
+                <input type="text" class="form-control" id="titulo">
             </div>
             <div class="mb-3">
-                <label for="dataInicio" class="form-label">Data de início</label>
+                <label for="desc" class="form-label">Descrição</label>
+                <textarea rows="4" cols="50" class="form-control" id="desc"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Opção 1 *</label>
+                <input type="text" class="form-control" id="opt1">
+            </div>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Opção 2 *</label>
+                <input type="text" class="form-control" id="opt2">
+            </div>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Opção 3</label>
+                <input type="text" class="form-control" id="opt3">
+            </div>
+            <div class="mb-3">
+                <label for="dataInicio" class="form-label">Data de início *</label>
                 <input type="date" class="form-control" id="dataInicio">
             </div>
             <div class="mb-3">
-                <label for="dataFim" class="form-label">Data de término</label>
-                <input type="date" class="form-control" id="dataFim">
+                <label for="dataFim" class="form-label">Data de término *</label>
+                <input type="date" class="form-control" id="dataTermino">
             </div>
             <button onclick="salvar();" type="button" class="btn btn-primary">Salvar</button>
         </form>

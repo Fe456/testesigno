@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar enquete</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet" />
+
+    <script>
+        const carregar = async () => {
+            console.log("chamou o carregar...");            
+            const id = location.search.substring(4,5);
+            if (!id) return;
+
+            const response = await fetch(`http://localhost:3000/enquetes/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                }
+            });
+            const enquetes = await response.json();
+            console.log(enquetes);
+
+            document.getElementById('titulo').textContent = enquetes.NOME;
+            document.getElementById('desc').textContent = enquetes.DESCR;
+            document.getElementById('dataInicio').textContent = enquetes.DATAINICIO;
+            document.getElementById('dataTermino').textContent = enquetes.DATATERMINO;
+            document.getElementById('opt1').textContent = enquetes.opt1;
+            document.getElementById('opt2').textContent = enquetes.opt2;
+            document.getElementById('opt3').textContent = enquetes.opt3;
+        }
+
+        carregar();
+    </script>
+</head>
+
+<body>
+    <div class="container" style="height: 100px;">
+        <h2 id="titulo"> Enquete</h2>
+        <text id="desc"></text> <text id="dataInicio"></text> <text id="dataTermino"></text>
+        <br/>
+        <div>
+            <button onclick="salvar();" type="button" class="btn btn-primary" id="opt1">Opção 1</button>
+            <label>0</label>
+        </div>
+        <div>
+            <button onclick="salvar();" type="button" class="btn btn-primary" id="opt2">Opção 1</button>
+            <label>0</label>
+        </div>
+        <div>
+            <button onclick="salvar();" type="button" class="btn btn-primary" id="opt3">Opção 1</button>
+            <label>0</label>
+        </div>
+        <br/>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
