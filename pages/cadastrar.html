@@ -15,26 +15,28 @@
             const id = location.search.substring(4,5);
             if (!id) return;
 
-            const response = await fetch(`http://localhost:3000/musicas/${id}`, {
+            const response = await fetch(`http://localhost:3000/enquetes/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 }
             });
-            const musicas = await response.json();
-            console.log(musicas);
+            const enquetes = await response.json();
+            console.log(enquetes);
 
-            document.getElementById('id').value = musicas.ID;
-            document.getElementById('nome').value = musicas.NOME;
-            document.getElementById('artista').value = musicas.ARTISTA;
+            document.getElementById('id').value = enquetes.ID;
+            document.getElementById('titulo').value = enquetes.NOME;
+            document.getElementById('dataInicio').value = enquetes.DATAINICIO;
+            document.getElementById('dataTermino').value = enquetes.DATATERMINO;
         }
 
         const salvar = async () => {
             const id = document.getElementById('id').value;
-            const nome = document.getElementById('nome').value;
-            const artista = document.getElementById('artista').value;
+            const nome = document.getElementById('titulo').value;
+            const DATAINICIO = document.getElementById('dataInicio').value;
+            const DATATERMINO = document.getElementById('dataTermino').value;
 
-            if (!nome || !artista) {
+            if (!nome || !DATAINICIO || !DATATERMINO) {
                 document.getElementById('campoObrigatorio').style.display = 'block';
                 return;
             }
@@ -42,9 +44,9 @@
             const formData = new FormData();
             formData.append('ID', id);
             formData.append('NOME', nome);
-            formData.append('ARTISTA', artista);
+            formData.append('DATAINICIO', DATAINICIO);
+            formData.append('DATATERMINO', DATATERMINO);
 
-            // Log the FormData to see what is being sent
             for (let pair of formData.entries()) {
                 console.log(pair[0]+ ': ' + pair[1]);
             }
@@ -52,14 +54,12 @@
             try {
                 let res;
                 if (id) {
-                    // If there's an ID, we are updating an existing music
-                    res = await fetch(`http://localhost:3000/musicas/${id}`, {
+                    res = await fetch(`http://localhost:3000/enquetes/${id}`, {
                         method: "PUT",
                         body: formData,
                     });
                 } else {
-                    // If no ID, we are creating a new music entry
-                    res = await fetch(`http://localhost:3000/musicas`, {
+                    res = await fetch(`http://localhost:3000/enquetes`, {
                         method: "POST",
                         body: formData,
                     });
@@ -69,14 +69,14 @@
                 console.log(result);
 
                 if (res.ok) {
-                    alert(id ? "Música atualizada com sucesso!" : "Cadastro de música realizado com sucesso!");
-                    window.location.href = "index.html";  // Redirect after success
+                    alert(id ? "Enquete atualizada com sucesso!" : "Cadastro de enquete realizado com sucesso!");
+                    window.location.href = "lista-enquetes.html";
                 } else {
                     alert(`Erro: ${result.error}`);
                 }
             } catch (error) {
                 console.error('Erro ao enviar os dados:', error);
-                alert("Erro ao salvar a música.");
+                alert("Erro ao salvar a enquete.");
             }
         };
 
