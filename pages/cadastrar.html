@@ -52,6 +52,7 @@
             const DATAINICIO_CLEAN = DATAINICIO.split('T')[0];
             const DATATERMINO_CLEAN = DATATERMINO.split('T')[0]; 
             console.log(DATAINICIO_CLEAN, DATATERMINO_CLEAN);
+            console.log(id, nome, DATAINICIO, DATATERMINO, DESC, opt1, opt2, opt3);
 
             const data = {
                 NOME: nome,
@@ -84,7 +85,7 @@
 
                 if (res.ok) {
                     alert(id ? "Enquete atualizada com sucesso!" : "Cadastro de enquete realizado com sucesso!");
-                    window.location.href = "lista-enquetes.html";
+                    window.location.href = "/";
                 } else {
                     alert(`Erro: ${result.error}`);
                 }

@@ -72,6 +72,52 @@ router.post('/enquetes', (req,res) => {
     });
 });
 
+router.put('/enquetes/:id', (req,res) => {
+    console.log(req.body);
+
+    const { id } = req.params;
+    const nome = req.body.NOME;
+    const DATAINICIO = req.body.DATAINICIO;
+    const DATATERMINO = req.body.DATATERMINO;
+    const DESCR = req.body.DESCR;
+    const opt1 = req.body.opt1;
+    const opt2 = req.body.opt2;
+    const opt3 = req.body.opt3;
+
+    console.log("Nome:", nome);
+    console.log("Data de Início:", DATAINICIO);
+    console.log("Data de Término:", DATATERMINO);
+    console.log("Descrição:", DESCR);
+    console.log("Opção 1:", opt1);
+    console.log("Opção 2:", opt2);
+    console.log("Opção 2:", opt3);
+
+    if (!nome || !DATAINICIO || !DATATERMINO || !opt1 || !opt2) {
+        return res.status(400).json({ error: "Nome, data de início e término, e ao mínimo 2 opções são obrigatórios" });
+    }
+
+    const updValues = [
+        nome,
+        DATAINICIO,
+        DATATERMINO,
+        DESCR,
+        opt1,
+        opt2,
+        opt3,
+        id
+    ];
+
+    const q = "UPDATE enquetes SET NOME = ?, DATAINICIO = ?, DATATERMINO = ?, DESCR = ?, opt1 = ?, opt2 = ?, opt3 = ? WHERE ID = ?";
+    con.query(q, updValues, (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Erro ao salvar a enquete" });
+        }
+        console.log(`Updated ${result.affectedRows} row(s)`);
+        res.status(201).json({ message: "Enquete salva com sucesso!", id: result.insertId });
+    });
+});
+
 router.get('/enquetes', (req,res) => {
     const q = "SELECT * FROM enquetes"
 
@@ -91,3 +137,15 @@ router.get('/enquetes/:id', (req,res) => {
         res.status(200).json(result[0]);
     });
 });
+
+router.delete('/enquetes/:id', (req,res) => {
+    const id = req.param("id");
+    const q = "DELETE FROM enquetes WHERE ID = ?";
+    con.query(q, id, function (err, result) {
+        if (err || result.length === 0) {
+            return res.status(404).send('Não encontrado');
+        }
+        res.status(200).json(result[0]);
+    });
+});
+
