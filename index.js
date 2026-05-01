@@ -156,7 +156,7 @@ router.get('/enquetes/:id', async (req,res) => {
 
 router.delete('/enquetes/:id', async (req,res) => {
     try {
-        const id = req.param("id");
+        const id = req.params.id;
         const q = "DELETE FROM enquetes WHERE ID = ?";
         const [result] = await con.query(q, id);
         console.log(result);
