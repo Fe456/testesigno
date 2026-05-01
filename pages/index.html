@@ -11,6 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
       <script>
       var id = localStorage.getItem('id');
+      if (!id) {
+        alert('Você precisa se autenticar na aplicação!');
+        location.href = 'login.html';
+      }
     </script>
     <script>
       const carregar = (id) => {

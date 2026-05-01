@@ -8,6 +8,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link href="style.css" rel="stylesheet" />
+    <link href="forms.css" rel="stylesheet" />
 
     <script>
         const carregar = async () => {
@@ -52,6 +53,17 @@
             const DATAINICIO_CLEAN = DATAINICIO.split('T')[0];
             const DATATERMINO_CLEAN = DATATERMINO.split('T')[0]; 
             console.log(DATAINICIO_CLEAN, DATATERMINO_CLEAN);
+
+            const currentDate = new Date().toLocaleDateString('en-CA');
+            if(DATATERMINO_CLEAN < currentDate) {
+                console.log("data no passado");
+                alert("Você não pode finalizar uma enquete no passado.");
+                return;
+            } else if(DATAINICIO_CLEAN > DATATERMINO_CLEAN) {
+                console.log("data depois da data de termino");
+                alert("Você não pode começar uma enquete após que ela conclua.");
+                return;
+            }
             console.log(id, nome, DATAINICIO, DATATERMINO, DESC, opt1, opt2, opt3);
 
             const data = {
@@ -100,7 +112,7 @@
 </head>
 
 <body>
-    <div class="container" style="height: 300px;">
+    <div class="container">
         <h2> Adicionar enquete</h2>
         <br>
         <form action="/cadastrar" method="post" enctype="multipart/form-data">
